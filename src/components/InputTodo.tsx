@@ -1,5 +1,36 @@
-const InputTodo = () => {
-    return <div>input field here...</div>;
+import { BaseSyntheticEvent, useState } from "react";
+const InputTodo = (props: any) => {
+  const { addTodoItem } = props;
+  const [title, setTitle] = useState("");
+
+  const handleChange = (e: BaseSyntheticEvent) => {
+    setTitle(e?.target?.value);
   };
-  export default InputTodo;
-  
+  const [message, setMessage] = useState("");
+  const handleSubmit = (e: BaseSyntheticEvent) => {
+    e.preventDefault();
+    if (title.trim()) {
+      addTodoItem(title);
+      setTitle("");
+      setMessage("");
+    } else {
+      setMessage("Please add item.");
+    }
+  };
+
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Add Todo..."
+          value={title}
+          onChange={handleChange}
+        />
+        <button>Submit</button>
+      </form>
+      <span>{message}</span>
+    </>
+  );
+};
+export default InputTodo;
