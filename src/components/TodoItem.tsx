@@ -1,9 +1,10 @@
 import styles from "@/styles/TodoItem.module.css";
-import { BaseSyntheticEvent, KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useState } from "react";
 
 const TodoItem = (props: any) => {
   const { itemProp, handleChange, delTodo, setUpdate } = props;
   const [editing, setEditing] = useState(false);
+  const [updateInput, setUpdateInput] = useState(itemProp.title);
   let viewMode = {display: ""};
   let editMode = {display : ""};
   if (editing) {
@@ -17,6 +18,7 @@ const TodoItem = (props: any) => {
 
   const handleUpdatedDone = (event:KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
+      setUpdate(updateInput, itemProp.id);
       setEditing(false);
     }
   };
@@ -41,16 +43,14 @@ const TodoItem = (props: any) => {
         <button onClick={handleEditing}>Edit</button>
         <button onClick={() => delTodo(itemProp?.id)}>Delete</button>
         <span style={itemProp?.completed ? completedStyle : {}}>
-          {itemProp?.title}
+          {updateInput}
         </span>
       </div>
       <input type="text" 
-        value={itemProp.title} 
+        value={updateInput} 
         className={styles.textInput} 
         style={editMode}
-        onChange={(e:BaseSyntheticEvent) => {
-            setUpdate(e?.target?.value, itemProp.id);
-        }}
+        onChange={(e) => setUpdateInput(e?.target?.value)}
         onKeyDown={handleUpdatedDone}
         />
     </li>
