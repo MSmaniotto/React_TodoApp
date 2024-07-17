@@ -1,6 +1,8 @@
+import { useTodosContext } from "@/context/TodosContext";
 import { BaseSyntheticEvent, useState } from "react";
-const InputTodo = (props: any) => {
-  const { addTodoItem } = props;
+import { FaPlusCircle } from "react-icons/fa"
+const InputTodo = () => {
+  const { addTodoItem } = useTodosContext();
   const [title, setTitle] = useState("");
 
   const handleChange = (e: BaseSyntheticEvent) => {
@@ -28,7 +30,13 @@ const InputTodo = (props: any) => {
           onChange={handleChange}
           className="input-text"
         />
-        <button className="input-submit">Submit</button>
+        <button className="input-submit">
+          <FaPlusCircle
+            color="#5e5e5e"
+            size="20px"
+            className="submit-icon"
+          />
+        </button>
       </form>
       <span className="submit-warning">{message}</span>
     </>

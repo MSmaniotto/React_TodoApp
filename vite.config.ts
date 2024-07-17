@@ -12,7 +12,8 @@ export default defineConfig({
     alias: {
       //[{find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url))!}],
       '@': resolve(projectRootDir, "src"),//npm install @types/node --save-dev
-      //find: '@', replacement: resolve(projectRootDir, 'src'),
+      
+      '@/context': resolve(projectRootDir, "src/context")
     },
   },
 })

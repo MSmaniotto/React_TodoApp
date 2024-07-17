@@ -1,28 +1,31 @@
 import styles from "@/styles/TodoItem.module.css";
 import { KeyboardEvent, useState } from "react";
+import { FaTrash } from "react-icons/fa";
+import { AiFillEdit } from "react-icons/ai";
+import { useTodosContext } from "@/context/TodosContext";
 
 const TodoItem = (props: any) => {
-  const { itemProp, handleChange, delTodo, setUpdate } = props;
+  const {itemProp} = props;
+  const {handleChange, delTodo, setUpdate} = useTodosContext();
   const [editing, setEditing] = useState(false);
   const [updateInput, setUpdateInput] = useState(itemProp.title);
-  let viewMode = {display: ""};
-  let editMode = {display : ""};
+  let viewMode = { display: "" };
+  let editMode = { display: "" };
   if (editing) {
-    viewMode.display = 'none';
+    viewMode.display = "none";
   } else {
-    editMode.display = 'none';
+    editMode.display = "none";
   }
   const handleEditing = () => {
     setEditing(true);
   };
 
-  const handleUpdatedDone = (event:KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+  const handleUpdatedDone = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
       setUpdate(updateInput, itemProp.id);
       setEditing(false);
     }
   };
-  
 
   const completedStyle = {
     fontStyle: "italic",
@@ -40,19 +43,24 @@ const TodoItem = (props: any) => {
           checked={itemProp?.completed}
           onChange={() => handleChange(itemProp?.id)}
         />
-        <button onClick={handleEditing}>Edit</button>
-        <button onClick={() => delTodo(itemProp?.id)}>Delete</button>
+        <button onClick={handleEditing} className="input-submit">
+          <AiFillEdit />
+        </button>
+        <button onClick={() => delTodo(itemProp?.id)}>
+          <FaTrash />
+        </button>
         <span style={itemProp?.completed ? completedStyle : {}}>
           {updateInput}
         </span>
       </div>
-      <input type="text" 
-        value={updateInput} 
-        className={styles.textInput} 
+      <input
+        type="text"
+        value={updateInput}
+        className={styles.textInput}
         style={editMode}
         onChange={(e) => setUpdateInput(e?.target?.value)}
         onKeyDown={handleUpdatedDone}
-        />
+      />
     </li>
   );
 };
