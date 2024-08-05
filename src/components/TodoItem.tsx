@@ -3,12 +3,14 @@ import { KeyboardEvent, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { AiFillEdit } from "react-icons/ai";
 import { useTodosContext } from "@/context/TodosContext";
+import { useAuthContext } from "@/context/AuthContext";
 
 const TodoItem = (props: any) => {
   const {itemProp} = props;
   const {handleChange, delTodo, setUpdate} = useTodosContext();
   const [editing, setEditing] = useState(false);
   const [updateInput, setUpdateInput] = useState(itemProp.title);
+  const { user }: any = useAuthContext();
   let viewMode = { display: "" };
   let editMode = { display: "" };
   if (editing) {
@@ -36,16 +38,18 @@ const TodoItem = (props: any) => {
 
   return (
     <li className={styles.item}>
-      <div className={styles.content} style={viewMode}>
+      <div className={styles.content} style={viewMode} key={itemProp?.key}>
+        <p>{itemProp?.key}</p>
         <input
-          key={itemProp?.key}
           type="checkbox"
           checked={itemProp?.completed}
           onChange={() => handleChange(itemProp?.id)}
         />
+        {user && (
         <button onClick={handleEditing} className="input-submit">
           <AiFillEdit />
         </button>
+        )}
         <button onClick={() => delTodo(itemProp?.id)}>
           <FaTrash />
         </button>
@@ -60,6 +64,7 @@ const TodoItem = (props: any) => {
         style={editMode}
         onChange={(e) => setUpdateInput(e?.target?.value)}
         onKeyDown={handleUpdatedDone}
+        key={itemProp?.key}
       />
     </li>
   );
